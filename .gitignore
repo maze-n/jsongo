@@ -1,0 +1,39 @@
+# Compiled binaries and shared libraries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Add your specific project binary name below (e.g., /myapp or /bin/)
+# /bin/
+
+# Test binaries, built with `go test -c`
+*.test
+
+# Output of the go coverage tool
+*.out
+coverage.*
+*.coverprofile
+profile.cov
+
+# Dependency directories (uncomment if you do not want to commit vendor/)
+# vendor/
+
+# Go workspace files
+go.work
+go.work.sum
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Editor and IDE files
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS-generated files
+.DS_Store
+Thumbs.db
