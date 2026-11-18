@@ -11,17 +11,12 @@ import (
 	"os"
 	"os/signal"
 	"path/filepath"
-	"sync"
 	"syscall"
 	"time"
 
 	"github.com/maze-n/jsongo/internal/api"
+	"github.com/maze-n/jsongo/internal/database"
 )
-
-type Store struct {
-	my   sync.Mutex
-	data map[string][]map[string]any
-}
 
 func main() {
 	port := flag.Int("port", 8080, "Server port number")
@@ -55,13 +50,20 @@ func main() {
 		os.Exit(1)
 	}
 
-	run(*port)
+	if err := run(filename, *port); err != nil {
+		log.Fatal(err)
+	}
 }
 
-func run(port int) error {
+func run(filename string, port int) error {
+	store, err := database.LoadStore(filename)
+	if err != nil {
+		return err
+	}
+
 	httpServer := &http.Server{
 		Addr:              fmt.Sprintf(":%d", port),
-		Handler:           api.HandleRoutes(),
+		Handler:           api.HandleRoutes(store),
 		ReadHeaderTimeout: 5 * time.Second,
 	}
 	ctx, stop := signal.NotifyContext(
